@@ -12,6 +12,8 @@ public class PlayerScript : MonoBehaviour
     public Text score;
 
     private int scoreValue = 0;
+    
+    KeyCode quitKey = KeyCode.Escape;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,12 @@ public class PlayerScript : MonoBehaviour
         float hozMovement = Input.GetAxis("Horizontal");
         float vertMovement = Input.GetAxis("Vertical");
         rd2d.AddForce(new Vector2(hozMovement * speed, vertMovement * speed));
+
+        if(Input.GetKeyDown(quitKey)) {
+            Application.Quit();
+ 
+            Debug.Log("Quit Game.");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
