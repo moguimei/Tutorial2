@@ -11,6 +11,8 @@ public class PlayerScript : MonoBehaviour
 
     public Text score;
 
+    public Text winText;
+
     private int scoreValue = 0;
     
     KeyCode quitKey = KeyCode.Escape;
@@ -43,6 +45,11 @@ public class PlayerScript : MonoBehaviour
             scoreValue += 1;
             score.text = scoreValue.ToString();
             Destroy(collision.collider.gameObject);
+
+            if (scoreValue == 4)
+            {
+                winText.text = "You Win! by Allison Li";
+            }
         }
 
     }
@@ -51,9 +58,9 @@ public class PlayerScript : MonoBehaviour
     {
         if (collision.collider.tag == "Ground")
         {
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                rd2d.AddForce(new Vector2(0, 3), ForceMode2D.Impulse); //the 3 in this line of code is the player's "jumpforce," and you change that number to get different jump behaviors.  You can also create a public variable for it and then edit it in the inspector.
+                rd2d.AddForce(new Vector2(0, 6), ForceMode2D.Impulse); //the 3 in this line of code is the player's "jumpforce," and you change that number to get different jump behaviors.  You can also create a public variable for it and then edit it in the inspector.
             }
         }
     }
