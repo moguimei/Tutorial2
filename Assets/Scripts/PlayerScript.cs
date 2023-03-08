@@ -61,6 +61,7 @@ public class PlayerScript : MonoBehaviour
         {
             livesValue -= 1;
             lives.text = "Lives: " + livesValue.ToString();
+            Destroy(collision.collider.gameObject);
         }
 
     }
