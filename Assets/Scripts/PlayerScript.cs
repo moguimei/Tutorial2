@@ -34,6 +34,7 @@ public class PlayerScript : MonoBehaviour
     Animator anim;
     private bool isMoving;
     private bool facingRight = true;
+    private bool won;
     private bool isJump;
 
     
@@ -58,31 +59,14 @@ public class PlayerScript : MonoBehaviour
         isJump = false;
         isMoving = false;
         
+        
+        
     }
     void Update()
     {
         float hozMovement = Input.GetAxis("Horizontal");
         float vertMovement = Input.GetAxis("Vertical");
 
-        
-        if (Input.GetKeyDown(KeyCode.A)){
-            if (hozMovement > 0){
-                anim.SetInteger("State", 1);
-            }
-            if (hozMovement < 0){
-                anim.SetInteger("State", 1);
-            }
-        }
-         if (Input.GetKeyDown(KeyCode.D)){
-            if (hozMovement > 0){
-                anim.SetInteger("State", 1);
-            }
-            if (hozMovement < 0){
-                anim.SetInteger("State", 1);
-            }
-        }
-        
-        
         if(Input.GetKeyDown(quitKey)) {
             Application.Quit();
  
@@ -92,11 +76,31 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W)){
             isGround = false;
             isJump = true;
-            anim.SetInteger("State", 2);
+            //anim.SetInteger("State", 2);
+        }
+        if (Input.GetKeyUp(KeyCode.W)){
+            isJump = false;
+            //anim.SetInteger("State", 2);
         }
         
         if (isGround == true){
-            anim.SetInteger("State", 0);
+            if (Input.GetKeyDown(KeyCode.A)){  
+                isMoving = true;    
+            }
+            if (Input.GetKeyDown(KeyCode.D)){
+                isMoving = true;
+            }
+
+        }
+        if (Input.GetKeyUp(KeyCode.A)){
+            isMoving = false;
+        }
+         if (Input.GetKeyUp(KeyCode.D)){
+            isMoving = false;
+        }
+
+        if (isJump == true){
+            anim.SetInteger("State", 2);
         }
         
         if (facingRight == false && hozMovement > 0)
@@ -147,15 +151,19 @@ public class PlayerScript : MonoBehaviour
                 transform.position = new Vector3(55f, 2.15f, 0f);
             }
         }
+
         if(collision.collider.tag == "Enemy")
         {
-            livesValue -= 1;
-            lives.text = "Lives: " + livesValue.ToString();
-            Destroy(collision.collider.gameObject);
+            if (gameOver == false){
+                livesValue -= 1;
+                lives.text = "Lives: " + livesValue.ToString();
+                Destroy(collision.collider.gameObject);
 
-            if (livesValue == 0){
-                rd2d.constraints = RigidbodyConstraints2D.FreezeAll;
-                winText.text = "You lose! Game by Allison Li";
+                if (livesValue == 0){
+                    rd2d.constraints = RigidbodyConstraints2D.FreezeAll;
+                    winText.text = "You lose! Game by Allison Li";
+                    gameOver = true;
+            }
             }
         }
 
@@ -165,8 +173,13 @@ public class PlayerScript : MonoBehaviour
     {
         if (collision.collider.tag == "Ground")
         {
-            anim.SetInteger("State", 0);
-
+            if (isMoving == false){
+            anim.SetInteger("State", 0); 
+            }
+            if (isMoving == true){
+            anim.SetInteger("State", 1);
+            }
+            isJump = false;
             if (isGround == false)
             {
                 rd2d.AddForce(new Vector2(0, 6), ForceMode2D.Impulse); 
