@@ -36,6 +36,8 @@ public class PlayerScript : MonoBehaviour
     private bool facingRight = true;
     private bool isJump;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,46 +56,46 @@ public class PlayerScript : MonoBehaviour
         moved = false;
         isGround = true;
         isJump = false;
+        isMoving = false;
         
     }
     void Update()
     {
+        float hozMovement = Input.GetAxis("Horizontal");
+        float vertMovement = Input.GetAxis("Vertical");
+
+        if (Input.GetKeyDown(KeyCode.A)){
+            if (hozMovement > 0){
+                anim.SetInteger("State", 1);
+            }
+            if (hozMovement < 0){
+                anim.SetInteger("State", 1);
+            }
+        }
+         if (Input.GetKeyDown(KeyCode.D)){
+            if (hozMovement > 0){
+                anim.SetInteger("State", 1);
+            }
+            if (hozMovement < 0){
+                anim.SetInteger("State", 1);
+            }
+        }
+        
         
         if(Input.GetKeyDown(quitKey)) {
             Application.Quit();
  
             Debug.Log("Quit Game.");
         }
+
         if (Input.GetKeyDown(KeyCode.W)){
             isGround = false;
+            isJump = true;
         }
         
-        float hozMovement = Input.GetAxis("Horizontal");
-        float vertMovement = Input.GetAxis("Vertical");
-
-        //if (isMoving == false)
-        
+        if (isGround == true){
             anim.SetInteger("State", 0);
-            if (hozMovement > 0){
-                //isMoving = true;
-                anim.SetInteger("State", 1);
-            }
-            if (hozMovement < 0){
-                //isMoving = true;
-                anim.SetInteger("State", 1);
-            }
-            if (isJump == false){
-                if (vertMovement > 0 && isGround == false){
-                    isJump = true;
-                    anim.SetInteger("State", 2);
-                }
-                if (vertMovement < 0 && isGround == false){
-                    isJump = true;
-                    anim.SetInteger("State", 2);
-                }
-                isJump = false;
         }
-    
         
         if (facingRight == false && hozMovement > 0)
         {
@@ -110,9 +112,7 @@ public class PlayerScript : MonoBehaviour
     {
         float hozMovement = Input.GetAxis("Horizontal");
         float vertMovement = Input.GetAxis("Vertical");
-        rd2d.AddForce(new Vector2(hozMovement * speed, vertMovement * speed));
-        
-        
+        rd2d.AddForce(new Vector2(hozMovement * speed, vertMovement * speed));  
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
