@@ -64,6 +64,7 @@ public class PlayerScript : MonoBehaviour
         float hozMovement = Input.GetAxis("Horizontal");
         float vertMovement = Input.GetAxis("Vertical");
 
+        
         if (Input.GetKeyDown(KeyCode.A)){
             if (hozMovement > 0){
                 anim.SetInteger("State", 1);
@@ -91,6 +92,7 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W)){
             isGround = false;
             isJump = true;
+            anim.SetInteger("State", 2);
         }
         
         if (isGround == true){
